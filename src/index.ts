@@ -1,7 +1,3 @@
-export class AuthProvider {
-    baseUrl: string = ""
+import { KeycloakAuthService, KeycloakAuthBuilder } from "./AuthService"
 
-    getProvider() {
-        return this.baseUrl
-    }
-}
+export { KeycloakAuthService, KeycloakAuthBuilder }

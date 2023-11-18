@@ -1,0 +1,11 @@
+.vscode
+.DS_store
+node_modules
+build
+dist
+coverage
+.env
+test-results
+**/.idea
+public/clarity.js
+analyse.html

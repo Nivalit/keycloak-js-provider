@@ -1,0 +1,60 @@
+{
+  "name": "keycloak-js-provider",
+  "version": "1.0.0",
+  "description": "Simple Keycloak Provider for SPA",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nivalit/keycloak-js-provider.git"
+  },
+  "keywords": [
+    "keycloak"
+  ],
+  "author": "Nivalit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nivalit/keycloak-js-provider/issues"
+  },
+  "homepage": "https://github.com/Nivalit/keycloak-js-provider#readme",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/keycloak-js-provider.es.js",
+      "require": "./dist/keycloak-js-provider.umd.js"
+    }
+  },
+  "main": "./dist/keycloak-js-provider.umd.js",
+  "module": "./dist/keycloak-js-provider.es.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "keycloak-js": "^19.0.2"
+  },
+  "peerDependencies": {
+    "axios": "^0.27.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "eslint": "^8.38.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "^1.4.1",
+    "vite-plugin-eslint": "1.8.1",
+    "vite-plugin-linter": "^1.2.0",
+    "vite-tsconfig-paths": "^3.5.0"
+  }
+}

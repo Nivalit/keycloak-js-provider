@@ -29,6 +29,7 @@
       "require": "./dist/keycloak-js-provider.umd.js"
     }
   },
+  "type": "module",
   "main": "./dist/keycloak-js-provider.umd.js",
   "module": "./dist/keycloak-js-provider.es.js",
   "types": "./dist/index.d.ts",

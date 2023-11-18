@@ -1,0 +1,17 @@
+.vscode
+.github
+.DS_store
+node_modules
+build
+src
+coverage
+.env
+test-results
+**/.idea
+.prettierrc.cjs
+.gitignore
+package-lock.json
+setup-version.mjs
+tsconfig.json
+tsconfig.node.json
+vite.config.ts

@@ -45,7 +45,7 @@ export class KeycloakAuthService {
         pkceMethod: this.config.pkceMethod,
       })
       .then((authenticated) => {
-        if (!authenticated) {
+        if (!authenticated && !this.isPublicPath()) {
           this.keycloak.login()
         }
         this.config.onAuthenticated()
@@ -60,7 +60,7 @@ export class KeycloakAuthService {
       })
   }
 
-  private unauthenticatedPath(): boolean {
+  private isPublicPath(): boolean {
     if (
       this.config.unauthenticatedPaths.some(
         (path) => path === window.location.pathname

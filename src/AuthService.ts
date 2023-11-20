@@ -85,7 +85,7 @@ export class KeycloakAuthService {
     axios.defaults.headers.get['Content-Type'] = 'application/json'
     axios.defaults.headers.put['Content-Type'] = 'application/json'
     axios.interceptors.request.use((axiosConfig) =>
-      this.unauthenticatedPath() && !this.keycloak.token
+      this.isPublicPath() && !this.keycloak.token
         ? Promise.resolve(axiosConfig)
         : new Promise((resolve) => {
           this.updateToken(() => {

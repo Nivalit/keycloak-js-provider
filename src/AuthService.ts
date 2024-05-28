@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable no-console */
-import axios from 'axios'
+import { AxiosInstance } from 'axios'
 import Keycloak, {
   KeycloakOnLoad,
   KeycloakPkceMethod,
@@ -36,8 +36,8 @@ export class KeycloakAuthService {
     return this.instance
   }
 
-  public init() {
-    this.initAxios()
+  public init(axiosInstances: AxiosInstance[] = []) {
+    axiosInstances.forEach(this.initAxios)
     this.keycloak
       .init({
         onLoad: this.config.onLoadMethod,
@@ -80,11 +80,11 @@ export class KeycloakAuthService {
       .catch(this.keycloak.login)
   }
 
-  private initAxios() {
-    axios.defaults.headers.post['Content-Type'] = 'application/json'
-    axios.defaults.headers.get['Content-Type'] = 'application/json'
-    axios.defaults.headers.put['Content-Type'] = 'application/json'
-    axios.interceptors.request.use((axiosConfig) =>
+  private initAxios(instance: AxiosInstance) {
+    instance.defaults.headers.post['Content-Type'] = 'application/json'
+    instance.defaults.headers.get['Content-Type'] = 'application/json'
+    instance.defaults.headers.put['Content-Type'] = 'application/json'
+    instance.interceptors.request.use((axiosConfig) =>
       this.isPublicPath() && !this.keycloak.token
         ? Promise.resolve(axiosConfig)
         : new Promise((resolve) => {

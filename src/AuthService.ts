@@ -36,8 +36,17 @@ export class KeycloakAuthService {
     return this.instance
   }
 
-  public init(axiosInstances: AxiosInstance[] = []) {
-    axiosInstances.forEach(this.initAxios)
+  /**
+   * Initialize
+   * 
+   * Try to initialize Keycloak Client based
+   * on the provided configuration.
+   */
+  public init() {
+    for (let i = 0; i < this.config.axiosInstances.length; i = i + 1) {
+      this.initAxios(this.config.axiosInstances[i])
+    }
+
     this.keycloak
       .init({
         onLoad: this.config.onLoadMethod,
@@ -80,7 +89,15 @@ export class KeycloakAuthService {
       .catch(this.keycloak.login)
   }
 
-  private initAxios(instance: AxiosInstance) {
+  /**
+   * Initialize Axios Instance
+   * 
+   * Setup headers to send application/json content type 
+   * and add Authorization Header with bearer token when trying 
+   * to access to protected path.
+   * @param {AxiosInstance} instance AxiosInstance which should be modified.
+   */
+  public initAxios(instance: AxiosInstance): void {
     instance.defaults.headers.post['Content-Type'] = 'application/json'
     instance.defaults.headers.get['Content-Type'] = 'application/json'
     instance.defaults.headers.put['Content-Type'] = 'application/json'
@@ -127,6 +144,7 @@ interface KeycloakAuthBuilderI {
   realmName: string
   onAuthenticated: () => void
   onError?: () => void
+  axiosInstances: AxiosInstance[]
   unauthenticatedPaths: string[]
   unauthenticatedPathsWildcards: string[]
   tokenValidity: number
@@ -149,12 +167,15 @@ export class KeycloakAuthBuilder {
 
   private onError?: () => void
 
+  private axiosInstances: AxiosInstance[]
+
   constructor(
     private url: string,
     private clientId: string,
     private realmName: string,
     onAuthenticated: () => void
   ) {
+    this.axiosInstances = []
     this.unauthenticatedPaths = []
     this.unauthenticatedPathsWildcards = []
     this.tokenValidity = 10
@@ -170,6 +191,11 @@ export class KeycloakAuthBuilder {
 
   public addPublicWildcard(path: string) {
     this.unauthenticatedPathsWildcards.push(path)
+    return this
+  }
+
+  public addClient(client: AxiosInstance) {
+    this.axiosInstances.push(client)
     return this
   }
 
@@ -197,6 +223,7 @@ export class KeycloakAuthBuilder {
       url: this.url,
       clientId: this.clientId,
       realmName: this.realmName,
+      axiosInstances: this.axiosInstances,
       onAuthenticated: this.onAuthenticated,
       onError: this.onError,
       unauthenticatedPaths: this.unauthenticatedPaths,

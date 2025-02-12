@@ -116,13 +116,21 @@ export class KeycloakAuthService {
     )
   }
 
-  public hasClientRoles(roles: string[], exact = false): boolean {
+  public hasClientRoles(roles: string[], exact = false, clientId = this.config.clientId): boolean {
     const clientRoles =
-      this.keycloak.resourceAccess?.[this.config.clientId]?.roles || []
+      this.keycloak.resourceAccess?.[clientId]?.roles || []
 
     return exact
       ? clientRoles.every((role) => roles.includes(role))
       : clientRoles.some((role) => roles.includes(role))
+  }
+
+  public hasRealmRoles(roles: string[], exact = false): boolean {
+    const realmRoles =
+      this.keycloak.realmAccess?.roles || []
+    return exact
+      ? realmRoles.every((role) => roles.includes(role))
+      : realmRoles.some((role) => roles.includes(role))
   }
 
   public isLoggedIn(): boolean {

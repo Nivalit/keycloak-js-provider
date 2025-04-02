@@ -110,7 +110,7 @@ export class KeycloakAuthService {
             const { token } = this.keycloak
             if (token && axiosConfig && axiosConfig.headers) {
               axiosConfig.headers.Authorization = `Bearer ${token}`
-              axiosConfig.headers.common[SESSION_ID_HEADER] = this.keycloak.sessionId
+              axiosConfig.headers[SESSION_ID_HEADER] = this.keycloak.sessionId
             }
             resolve(axiosConfig)
           })

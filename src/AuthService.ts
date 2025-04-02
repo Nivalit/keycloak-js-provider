@@ -8,6 +8,7 @@ import Keycloak, {
   KeycloakProfile,
 } from 'keycloak-js'
 
+const SESSION_ID_HEADER = 'Session-Id'
 export class KeycloakAuthService {
   private static instance: KeycloakAuthService
 
@@ -50,7 +51,7 @@ export class KeycloakAuthService {
     this.keycloak
       .init({
         onLoad: this.config.onLoadMethod,
-        checkLoginIframe: this.config.checkLoginIframe,
+        silentCheckSsoRedirectUri: `${window.location.origin}/auth/silent-check-sso.html`,
         pkceMethod: this.config.pkceMethod,
       })
       .then((authenticated) => {
@@ -109,7 +110,7 @@ export class KeycloakAuthService {
             const { token } = this.keycloak
             if (token && axiosConfig && axiosConfig.headers) {
               axiosConfig.headers.Authorization = `Bearer ${token}`
-              axiosConfig.headers.common['Session-Id'] = this.keycloak.sessionId
+              axiosConfig.headers.common[SESSION_ID_HEADER] = this.keycloak.sessionId
             }
             resolve(axiosConfig)
           })
@@ -159,7 +160,6 @@ interface KeycloakAuthBuilderI {
   tokenValidity: number
   pkceMethod?: KeycloakPkceMethod
   onLoadMethod: KeycloakOnLoad
-  checkLoginIframe: boolean
 }
 
 export class KeycloakAuthBuilder {
@@ -179,8 +179,6 @@ export class KeycloakAuthBuilder {
 
   private axiosInstances: AxiosInstance[]
 
-  private checkLoginIframe: boolean
-
   constructor(
     private url: string,
     private clientId: string,
@@ -194,7 +192,6 @@ export class KeycloakAuthBuilder {
     this.pkceMethod = 'S256'
     this.onLoadMethod = 'check-sso'
     this.onAuthenticated = onAuthenticated
-    this.checkLoginIframe = false
   }
 
   public addPublicPath(path: string) {
@@ -244,7 +241,6 @@ export class KeycloakAuthBuilder {
       tokenValidity: this.tokenValidity,
       pkceMethod: this.pkceMethod,
       onLoadMethod: this.onLoadMethod,
-      checkLoginIframe: this.checkLoginIframe
     })
   }
 }

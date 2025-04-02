@@ -50,7 +50,7 @@ export class KeycloakAuthService {
     this.keycloak
       .init({
         onLoad: this.config.onLoadMethod,
-        silentCheckSsoRedirectUri: `${window.location.origin}/auth/silent-check-sso.html`,
+        checkLoginIframe: this.config.checkLoginIframe,
         pkceMethod: this.config.pkceMethod,
       })
       .then((authenticated) => {
@@ -159,6 +159,7 @@ interface KeycloakAuthBuilderI {
   tokenValidity: number
   pkceMethod?: KeycloakPkceMethod
   onLoadMethod: KeycloakOnLoad
+  checkLoginIframe: boolean
 }
 
 export class KeycloakAuthBuilder {
@@ -178,6 +179,8 @@ export class KeycloakAuthBuilder {
 
   private axiosInstances: AxiosInstance[]
 
+  private checkLoginIframe: boolean
+
   constructor(
     private url: string,
     private clientId: string,
@@ -191,6 +194,7 @@ export class KeycloakAuthBuilder {
     this.pkceMethod = 'S256'
     this.onLoadMethod = 'check-sso'
     this.onAuthenticated = onAuthenticated
+    this.checkLoginIframe = false
   }
 
   public addPublicPath(path: string) {
@@ -240,6 +244,7 @@ export class KeycloakAuthBuilder {
       tokenValidity: this.tokenValidity,
       pkceMethod: this.pkceMethod,
       onLoadMethod: this.onLoadMethod,
+      checkLoginIframe: this.checkLoginIframe
     })
   }
 }

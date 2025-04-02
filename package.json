@@ -33,7 +33,7 @@
   "module": "./dist/keycloak-js-provider.es.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "keycloak-js": "^19.0.2"
+    "keycloak-js": "^20.0.5"
   },
   "peerDependencies": {
     "axios": "^1.6.2"
